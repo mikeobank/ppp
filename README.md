@@ -6,7 +6,8 @@ This is highly insecure! Do not use this for any real world value or data. Thoug
 ## docs
 In psuedocode this is happening:
 ```
-256 bits entropy: strings.reduce (entropy, string, index) => pbkdf2 (password: string, salt: entropy, iterations: 512 * (index + 1), hash-function: HMAC SHA256)
+256 bits entropy: strings.reduce (entropy, string, index) => 
+    pbkdf2 (password: string, salt: entropy, iterations: 512 * (index + 1), hash-function: HMAC SHA256)
 ```
 
 ## run
@@ -14,6 +15,6 @@ In psuedocode this is happening:
 cargo run password asdfghjkl 1984
 ```
 
-## TODO
+## todo
 - character sets, entropy calculation
 - dictionary attack checks
