@@ -7,7 +7,7 @@ This is highly insecure! Do not use this for any real world value or data. Thoug
 In psuedocode this is happening:
 ```
 256 bits entropy: strings.reduce (entropy, string, index) =>
-    pbkdf2 (password: string, salt: entropy, iterations: 512 * (index + 1), hash-function: HMAC SHA256)
+    pbkdf2 (password: string, salt: entropy, iterations: 512 * (2 ^ index), hash-function: HMAC SHA256)
 ```
 
 ## run
