@@ -1,6 +1,10 @@
-use pbkdf2::{pbkdf2_hmac_array};
+use pbkdf2::pbkdf2_hmac_array;
 use sha2::Sha256;
 use bip39::{Mnemonic, Language};
+use num_bigint::BigUint;
+use num_traits::One;
+
+mod entropy;
 
 fn main() {
 
@@ -15,16 +19,23 @@ fn main() {
     }
 
     let mut bytes: [u8; SIZE] = [0; SIZE];
+    let mut total_entropy: BigUint = One::one();
 
     for (i, arg) in args.iter().skip(1).enumerate() {
-        println!("{}", arg);
         let s = arg.trim();
+        let entropy = entropy::calculate_for_string(s);
+        println!("{} ({})", arg, entropy);
+        total_entropy = total_entropy * entropy;
         let password = s.as_bytes();
         let salt = &bytes;
         let i_u32: u32 = i.try_into().unwrap();
-        let n: u32 = N * (i_u32 + 1);
+        let b_u32: u32 = 2;
+        let n: u32 = N * b_u32.pow(i_u32);
         bytes = pbkdf2_hmac_array::<Sha256, SIZE>(password, salt, n);
     }
+
+    println!("===");
+    println!("total ({} = {} bits)", total_entropy, entropy::decimal_to_bits(&total_entropy));
 
     println!("entropy: {:?}", bytes);
 
