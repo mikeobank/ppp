@@ -1,6 +1,6 @@
 # PPP
 
-Rust CLI tool to deterministically map a list of strings (passwords) into a 256 bit seed.
+Rust CLI tool to deterministically map (key stretch) a list of strings (passwords) into a 256 bit seed.
 This is highly insecure! Do not use this for any real world value or data. Though, the interesting question: is there a treshold of number of passwords (character sets and password lengths) where brute forcing becomes hard enough?
 
 ## docs
