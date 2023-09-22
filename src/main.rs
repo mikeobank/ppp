@@ -1,10 +1,11 @@
+mod entropy;
+mod text_file;
+
 use pbkdf2::pbkdf2_hmac_array;
 use sha2::Sha256;
 use bip39::{Mnemonic, Language};
 use num_bigint::BigUint;
 use num_traits::One;
-
-mod entropy;
 
 fn main() {
 

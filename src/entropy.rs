@@ -3,6 +3,8 @@ use num_bigint::BigUint;
 use num_traits::{Zero, One};
 use num::pow::pow;
 
+use crate::text_file;
+
 pub fn calculate_for_string(string: &str) -> BigUint {
 
   let num_chars = string.chars().count();
@@ -11,14 +13,21 @@ pub fn calculate_for_string(string: &str) -> BigUint {
     return One::one();
   }
 
+  if in_dictionary(string) {
+    return One::one();
+  }
+
   let base: u32;
 
   let digits_regex = Regex::new(r"^\d+$").unwrap();
+  let hex_regex = Regex::new(r"^[a-fA-F0-9]+$").unwrap();
   let alphanumeric_regex = Regex::new(r"^[a-zA-Z0-9]+$").unwrap();
   let ascii_regex = Regex::new(r"^[ -~]+$").unwrap();
 
   if digits_regex.is_match(string) {
     base = 10;
+  } else if hex_regex.is_match(string) {
+    base = 16;
   } else if alphanumeric_regex.is_match(string) {
     base = 42;
   } else if ascii_regex.is_match(string) {
@@ -40,4 +49,8 @@ pub fn decimal_to_bits(n: &BigUint) -> u32 {
     nn = nn >> 1;
   }
   return b;
+}
+
+fn in_dictionary(string: &str) -> bool {
+  return text_file::find_in(String::from("./dict/1000000-password-seclists.txt"), string)
 }
