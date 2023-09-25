@@ -7,7 +7,7 @@ use bip39::{Mnemonic, Language};
 
 fn main() {
 
-    const N: u32 = 512;
+    const N: u32 = 600_000;
 
     let args: Vec<String> = std::env::args().collect();
 
