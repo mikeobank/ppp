@@ -1,15 +1,12 @@
 mod entropy;
 mod text_file;
+mod key;
+mod passwords;
 
-use pbkdf2::pbkdf2_hmac_array;
-use sha2::Sha256;
 use bip39::{Mnemonic, Language};
-use num_bigint::BigUint;
-use num_traits::One;
 
 fn main() {
 
-    const SIZE: usize = 32; // 256 / 8
     const N: u32 = 512;
 
     let args: Vec<String> = std::env::args().collect();
@@ -19,27 +16,20 @@ fn main() {
         std::process::abort();
     }
 
-    let mut bytes: [u8; SIZE] = [0; SIZE];
-    let mut total_entropy: BigUint = One::one();
+    let strings = args[1..].to_vec();
+    let passwords = passwords::prepare(strings);
 
-    for (i, arg) in args.iter().skip(1).enumerate() {
-        let s = arg.trim();
-        let entropy = entropy::calculate_for_string(s);
-        println!("{} ({})", arg, entropy);
-        total_entropy = total_entropy * entropy;
-        let password = s.as_bytes();
-        let salt = &bytes;
-        let i_u32: u32 = i.try_into().unwrap();
-        let b_u32: u32 = 2;
-        let n: u32 = N * b_u32.pow(i_u32);
-        bytes = pbkdf2_hmac_array::<Sha256, SIZE>(password, salt, n);
+    let key = key::stretch(N, &passwords);
+    let (total_entropy, entropies) = entropy::calculate(&passwords);
+    let mnemonic = Mnemonic::from_entropy(&key, Language::English).unwrap();
+
+    // print output
+    for (i, password) in passwords.iter().enumerate() {
+        println!("{} ({})", password, entropies[i]);
     }
-
-    println!("===");
+    println!("---");
     println!("total ({} = {} bits)", total_entropy, entropy::decimal_to_bits(&total_entropy));
-
-    println!("entropy: {:?}", bytes);
-
-    let mnemonic = Mnemonic::from_entropy(&bytes, Language::English).unwrap();
+    println!("===");
+    println!("entropy: {:?}", key);
     println!("mnemonic: {}", mnemonic);
 }

@@ -5,7 +5,19 @@ use num::pow::pow;
 
 use crate::text_file;
 
-pub fn calculate_for_string(string: &str) -> BigUint {
+pub fn calculate(strings: &Vec<String>) -> (BigUint, Vec<BigUint>) {
+
+  let mut entropies: Vec<BigUint> = Vec::new();
+  let mut total: BigUint = One::one();
+  for string in strings.iter() {
+    let entropy = calculate_for_string(string);
+    entropies.push(entropy.clone());
+    total = total * entropy;
+  }
+  return (total, entropies);
+}
+
+fn calculate_for_string(string: &str) -> BigUint {
 
   let num_chars = string.chars().count();
 
