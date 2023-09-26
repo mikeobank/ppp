@@ -1,6 +1,6 @@
 
 use regex::Regex;
-use num_bigint::BigUint;
+use num_bigint::{BigUint, ToBigUint};
 use num_traits::{Zero, One};
 use num::pow::pow;
 
@@ -27,7 +27,8 @@ fn calculate_for_string(string: &str) -> BigUint {
   }
 
   if in_dictionary(string) {
-    return One::one();
+    let n: BigUint = 1_000_000.to_biguint().unwrap();
+    return n;
   }
 
   let base: u32;
