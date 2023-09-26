@@ -9,6 +9,8 @@ fn main() {
 
     const N: u32 = 150_000;
     const MINIMUM_DEPTH: usize = 3;
+    // @TODO:
+    //const KEY_SIZE: usize = 256; // 128 or 256
 
     let args: Vec<String> = std::env::args().collect();
 
