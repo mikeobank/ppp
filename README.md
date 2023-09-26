@@ -16,5 +16,14 @@ Make sure to have Rust and Cargo installed.
 cargo run password asdfghjkl 1984
 ```
 
+## to do
+- prompt, spinner, key stretching per step
+- command line arguments
+    - `initial_n`
+    - `key_size`
+    - `minimum_depth`
+    - `hide passwords`
+- PBKDF2 vs. Argon2
+
 ## resources
 - Current password dictionary: https://raw.githubusercontent.com/duyet/bruteforce-database/master/1000000-password-seclists.txt
