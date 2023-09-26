@@ -7,12 +7,13 @@ use bip39::{Mnemonic, Language};
 
 fn main() {
 
-    const N: u32 = 600_000;
+    const N: u32 = 150_000;
+    const MINIMUM_DEPTH: usize = 3;
 
     let args: Vec<String> = std::env::args().collect();
 
-    if args.len() <= 1 {
-        println!("Supply at least one \"password\"");
+    if args.len() < MINIMUM_DEPTH + 1 {
+        println!("Supply at least {} passwords", MINIMUM_DEPTH);
         std::process::abort();
     }
 
