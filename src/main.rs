@@ -1,7 +1,7 @@
+mod passwords;
+mod key;
 mod entropy;
 mod text_file;
-mod key;
-mod passwords;
 
 use bip39::{Mnemonic, Language};
 
